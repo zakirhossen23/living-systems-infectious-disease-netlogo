@@ -14,6 +14,7 @@ globals [
 
   ;Variables for your analysis
 
+
   most_effective_measure
 
   least_effective_measure
@@ -53,31 +54,50 @@ humans-own[
   antibodies
 
 ]
-
+;setup world
 to setup_world
   reset-ticks
+  clear-all
+ make-blue-area
 
-  make-liver
-   make-pancreas
+
 end
 
+;setup agents
+to setup_agents
 
+    create-humans blue_population
+    [
+          set color yellow
+      set size   ;; easier to see
+     setxy random-xcor random-ycor
+  ]
+
+end
 
 ; Sets up Blue Area
-to make-
+to make-blue-area
   ask patches with [ pxcor < round (max-pxcor / 50) ] [
     sprout  1[
       set shape "square 2"
       set color blue
+            set heading -90 * random 4
+  ]]
+  ask patches with [pxcor >= round (max-pxcor / 50) ] [  sprout  2[
+      set shape "square 2"
+      set color green
+          set heading 90 * random 4
     ]
 
   ]
+
+
 end
 
 ; Sets up Green Area
-to make-pancreas
+to make-green-area
   ask patches with [pxcor >= round (max-pxcor / 50) ] [
-     sprout  1[
+     sprout  2[
       set shape "square 2"
       set color green
     ]
@@ -171,7 +191,7 @@ green_population
 green_population
 0
 10000
-5000.0
+5050.0
 10
 1
 NIL
@@ -201,7 +221,7 @@ initially_infected
 initially_infected
 0
 1000
-10.0
+395.0
 1
 1
 NIL
@@ -246,7 +266,7 @@ immunity_duration
 immunity_duration
 0
 1000
-500.0
+501.0
 1
 1
 NIL
@@ -261,7 +281,7 @@ undetected_period
 undetected_period
 0
 300
-200.0
+210.0
 1
 1
 NIL
@@ -300,7 +320,7 @@ SWITCH
 427
 self_isolation
 self_isolation
-1
+0
 1
 -1000
 
@@ -311,7 +331,7 @@ SWITCH
 459
 social_distancing
 social_distancing
-1
+0
 1
 -1000
 
