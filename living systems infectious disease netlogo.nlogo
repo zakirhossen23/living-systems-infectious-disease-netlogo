@@ -58,39 +58,53 @@ humans-own[
 to setup_world
   reset-ticks
   clear-all
+ make-area
+
 
 end
 
 ;setup agents
 to setup_agents
-  create-humans 2
-    [
-     setxy random-xcor random-ycor
-      set color yellow
-      set size 15  ;; easier to see
-    ]
 
+  create-humans blue_population
+  [
+    set color yellow
+    set size 15  ;; easier to see
+
+    set xcor max-pxcor + random max-pxcor
+    set ycor random-float min-pycor * 2
+
+  ]
+    create-humans green_population
+  [
+    set color yellow
+    set size 15  ;; easier to see
+
+    set xcor  random max-pxcor
+    set ycor random-float min-pycor * 2
+
+  ]
 end
 
-; Sets up Blue Area
-to make-blue-area
+; Sets up Green and Blue Area
+to make-area
+
+  ;green
+  ask patches with [pxcor >= round (max-pxcor / 50) ] [  sprout  2[
+      set shape "square 2"
+      set color green
+
+    ]
+
+  ]
+    ;blue
   ask patches with [ pxcor < round (max-pxcor / 50) ] [
     sprout  1[
       set shape "square 2"
       set color blue
-    ]
 
-  ]
-end
+  ]]
 
-; Sets up Green Area
-to make-green-area
-  ask patches with [pxcor >= round (max-pxcor / 50) ] [
-     sprout  1[
-      set shape "square 2"
-      set color green
-    ]
-  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -180,7 +194,7 @@ green_population
 green_population
 0
 10000
-5060.0
+6.0
 10
 1
 NIL
@@ -195,7 +209,7 @@ blue_population
 blue_population
 0
 10000
-300.0
+2510.0
 10
 1
 NIL
@@ -210,7 +224,7 @@ initially_infected
 initially_infected
 0
 1000
-50.0
+395.0
 1
 1
 NIL
