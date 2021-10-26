@@ -57,15 +57,14 @@ humans-own[
 to setup_world
   reset-ticks
 
-  make-blue
-   make-green
-
+  make-liver
+   make-pancreas
 end
 
 
 
 ; Sets up Blue Area
-to make-blue
+to make-
   ask patches with [ pxcor < round (max-pxcor / 50) ] [
     sprout  1[
       set shape "square 2"
@@ -76,7 +75,7 @@ to make-blue
 end
 
 ; Sets up Green Area
-to make-green
+to make-pancreas
   ask patches with [pxcor >= round (max-pxcor / 50) ] [
      sprout  1[
       set shape "square 2"
