@@ -58,7 +58,7 @@ humans-own[
 ;setup world
 to setup_world
 
-  clear-all
+  clear-turtles
  make-area
  reset-ticks
 end
@@ -70,52 +70,87 @@ to setup_agents
   [
     set color yellow
     set size 15  ;; easier to see -----------------------------------------------------------------X-------------------------------------------------------------------
-    set shape "person"
+    set shape "blue person"
     set xcor max-pxcor + random max-pxcor
     set ycor random-float min-pycor * 2
-      set antibodies 0
+    set antibodies 0
   ]
     create-humans green_population
   [
     set color yellow
     set size 15  ;; easier to see ---------------------------------------------------------------------X-------------------------------------------------------------------
-     set shape "person"
+     set shape "green person"
     set xcor  random max-pxcor
     set ycor random-float min-pycor * 2
     set antibodies 0
+    set heading (random 4) * 90
   ]
-
+;blue
   create-humans initially_infected
   [
     set color black
     set size 15  ;; easier to see -------------------------------------------------------------------X-------------------------------------------------------------------
-    set shape "person"
+    set shape "blue person"
     set xcor max-pxcor + random max-pxcor
     set ycor random-float min-pycor * 2
-      set antibodies 0
+    set antibodies 0
+    set heading (random 4) * 90
   ]
+  ;green
     create-humans initially_infected
   [
     set color black
     set size 15  ;; easier to see ---------------------------------------------------------------------X-------------------------------------------------------------------
-     set shape "person"
+     set shape "green person"
     set xcor  random max-pxcor
     set ycor random-float min-pycor * 2
     set antibodies 0
+    set heading (random 4) * 90
   ]
 
 end
 
 ;run model
 to run_model
-  ask humans [
-    right random 20
-    left random 20
-    forward 1
-  ]
+  move
+;  ask humans [
+;    right random 20
+;    left random 20
+;    forward 0.2
+;  ]
   tick
-
 end
+
+to move
+
+  if travel_restrictions != true [
+    ask humans [
+      right random 20
+      left random 20
+      forward 0.2
+    ]
+  ]
+    if travel_restrictions [
+    ask humans [
+      if shape = "blue person" [
+        if pcolor = green [right 90 ]
+        if (min-pxcor * 0) <= xcor  [right 90]
+        if min-pycor >= ycor [right 90]
+      ]
+      if shape = "green person" [
+        if max-pxcor <= xcor [right 90]
+        if pcolor = blue [ right 90]
+        if (max-pxcor ) <= xcor  [right 90]
+        if min-pycor >= ycor [right 90]
+      ]
+         right random 20
+      left random 20
+      forward 0.2
+    ]
+
+  ]
+end
+
 
 ; Sets up Green and Blue Area
 to make-area
@@ -124,8 +159,8 @@ to make-area
   set green_wall patches with [  pcolor = green   ]
 
   ;blue
-  ask patches with [ pxcor >= round (max-pxcor / 50) ] [  set pcolor blue  ]
-  set green_wall patches with [  pcolor = blue   ]
+  ask patches with [ pxcor < round (max-pxcor / 50) ] [  set pcolor blue  ]
+  set blue_wall patches with [  pcolor = blue   ]
 
 
 end
@@ -217,7 +252,7 @@ green_population
 green_population
 0
 10000
-620.0
+5.0
 10
 1
 NIL
@@ -232,7 +267,7 @@ blue_population
 blue_population
 0
 10000
-1120.0
+10.0
 10
 1
 NIL
@@ -247,7 +282,7 @@ initially_infected
 initially_infected
 0
 1000
-395.0
+22.0
 1
 1
 NIL
@@ -335,7 +370,7 @@ SWITCH
 391
 travel_restrictions
 travel_restrictions
-1
+0
 1
 -1000
 
@@ -412,6 +447,15 @@ arrow
 true
 0
 Polygon -7500403 true true 150 0 0 150 105 150 105 293 195 293 195 150 300 150
+
+blue person
+false
+0
+Circle -7500403 true true 110 5 80
+Polygon -7500403 true true 105 90 120 195 90 285 105 300 135 300 150 225 165 300 195 300 210 285 180 195 195 90
+Rectangle -7500403 true true 127 79 172 94
+Polygon -7500403 true true 195 90 240 150 225 180 165 105
+Polygon -7500403 true true 105 90 60 150 75 180 135 105
 
 box
 false
@@ -539,6 +583,15 @@ Circle -7500403 true true 96 51 108
 Circle -16777216 true false 113 68 74
 Polygon -10899396 true false 189 233 219 188 249 173 279 188 234 218
 Polygon -10899396 true false 180 255 150 210 105 210 75 240 135 240
+
+green person
+false
+0
+Circle -7500403 true true 110 5 80
+Polygon -7500403 true true 105 90 120 195 90 285 105 300 135 300 150 225 165 300 195 300 210 285 180 195 195 90
+Rectangle -7500403 true true 127 79 172 94
+Polygon -7500403 true true 195 90 240 150 225 180 165 105
+Polygon -7500403 true true 105 90 60 150 75 180 135 105
 
 house
 false
