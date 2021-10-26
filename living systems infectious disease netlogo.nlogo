@@ -69,8 +69,8 @@ to setup_agents
   create-humans blue_population
   [
     set color yellow
-    set size 15  ;; easier to see
-
+    set size 15  ;; easier to see -----------------------------------------------------------------
+    set shape "person"
     set xcor max-pxcor + random max-pxcor
     set ycor random-float min-pycor * 2
 
@@ -78,8 +78,8 @@ to setup_agents
     create-humans green_population
   [
     set color yellow
-    set size 15  ;; easier to see
-
+    set size 15  ;; easier to see -------------------------------------------------------------------
+     set shape "person"
     set xcor  random max-pxcor
     set ycor random-float min-pycor * 2
 
@@ -194,7 +194,7 @@ green_population
 green_population
 0
 10000
-6.0
+2580.0
 10
 1
 NIL

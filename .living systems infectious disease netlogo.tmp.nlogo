@@ -69,21 +69,41 @@ to setup_agents
   create-humans blue_population
   [
     set color yellow
-    set size 15  ;; easier to see
-
+    set size 15  ;; easier to see -----------------------------------------------------------------
+    set shape "person"
     set xcor max-pxcor + random max-pxcor
     set ycor random-float min-pycor * 2
-
+      set antibodies 0
   ]
-    create-humans blue_population
+    create-humans green_population
   [
     set color yellow
-    set size 15  ;; easier to see
+    set size 15  ;; easier to see -------------------------------------------------------------------
+     set shape "person"
+    set xcor  random max-pxcor
+    set ycor random-float min-pycor * 2
+    set antibodies 0
+  ]
 
+  create-humans initially_infected
+  [
+    set color
+    set size 15  ;; easier to see -----------------------------------------------------------------
+    set shape "person"
     set xcor max-pxcor + random max-pxcor
     set ycor random-float min-pycor * 2
-
+      set antibodies 0
   ]
+    create-humans initially_infected
+  [
+    set color yellow
+    set size 15  ;; easier to see -------------------------------------------------------------------
+     set shape "person"
+    set xcor  random max-pxcor
+    set ycor random-float min-pycor * 2
+    set antibodies 0
+  ]
+
 end
 
 ; Sets up Green and Blue Area
@@ -194,7 +214,7 @@ green_population
 green_population
 0
 10000
-5050.0
+620.0
 10
 1
 NIL
@@ -209,7 +229,7 @@ blue_population
 blue_population
 0
 10000
-2510.0
+1120.0
 10
 1
 NIL
