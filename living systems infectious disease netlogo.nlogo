@@ -53,7 +53,7 @@ humans-own[
   infected_time
 
   antibodies
-
+  isinfected
 ]
 ;setup world
 to setup_world
@@ -74,6 +74,7 @@ to setup_agents
     set xcor max-pxcor + random max-pxcor
     set ycor random-float min-pycor * 2
     set antibodies 0
+    set isinfected false
   ]
     create-humans green_population
   [
@@ -83,29 +84,32 @@ to setup_agents
     set xcor  random max-pxcor
     set ycor random-float min-pycor * 2
     set antibodies 0
+    set isinfected false
     set heading (random 4) * 90
   ]
 ;blue
   create-humans initially_infected
   [
-    set color black
+    set color red
     set size 15  ;; easier to see -------------------------------------------------------------------X-------------------------------------------------------------------
     set shape "blue person"
     set xcor max-pxcor + random max-pxcor
     set ycor random-float min-pycor * 2
     set antibodies 0
     set heading (random 4) * 90
+        set isinfected true
   ]
   ;green
     create-humans initially_infected
   [
-    set color black
+    set color red
     set size 15  ;; easier to see ---------------------------------------------------------------------X-------------------------------------------------------------------
      set shape "green person"
     set xcor  random max-pxcor
     set ycor random-float min-pycor * 2
     set antibodies 0
     set heading (random 4) * 90
+        set isinfected true
   ]
 
 end
@@ -127,7 +131,6 @@ to move
   ]
   ;travel restrictions
   if travel_restrictions [
-
     ask humans [
       if shape = "blue person" [
         if pcolor = green [ right 90  set heading -10 ]
@@ -135,31 +138,53 @@ to move
         if min-pycor >= ycor [right 90]
       ]
       if shape = "green person" [
-
         if max-pxcor <= xcor [right 90]
         if pcolor = blue [ right 90  set heading 10]
         if (max-pxcor ) <= xcor  [right 90]
         if min-pycor >= ycor [right 90]
       ]
-
-         right random 20
-      left random 20
-      forward 0.2
     ]
 
-
-
   ]
+
   ;social distance
-   if social_distancing = true [
+  if social_distancing = true [
     distancing
   ]
+  ask humans [;cheking infection
+    if not any? humans with [ breed != [ breed ] of myself and abs (ycor - [ ycor ] of myself) < 1 and isinfected = true and antibodies = 0 and self_isolation = false ] [
+      set isinfected true;infected
+       set infected_time illness_duration + undetected_period
+    ]
+    right random 20
+    left random 20
+    forward 0.2
+  ]
 
+  ;self_isolation
+  if self_isolation = true[
+    isolation
+  ]
 end
-to distancing ;; distancing procedure
+;isolation
+to isolation
+   ask humans [
+    set color orange
+    set infected_time illness_duration + undetected_period
+
+    if not any? humans with [ breed != [ breed ] of myself and abs (ycor - [ ycor ] of myself) < 1 and isinfected = true and antibodies = 0 and self_isolation = false ] [
+      set isinfected true;infected
+
+    ]
+  ]
+end
+
+; distancing procedure
+to distancing ;
    ask humans [
     if not any? humans with [ breed != [ breed ] of myself and abs (ycor - [ ycor ] of myself) < 1 ] [
-     forward 0.2
+   left -10
+      right -10
     ]
   ]
 end
@@ -354,7 +379,7 @@ undetected_period
 undetected_period
 0
 300
-210.0
+209.0
 1
 1
 NIL
@@ -382,7 +407,7 @@ SWITCH
 391
 travel_restrictions
 travel_restrictions
-0
+1
 1
 -1000
 
