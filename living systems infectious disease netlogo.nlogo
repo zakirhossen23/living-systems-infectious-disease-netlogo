@@ -113,16 +113,11 @@ end
 ;run model
 to run_model
   move
-;  ask humans [
-;    right random 20
-;    left random 20
-;    forward 0.2
-;  ]
   tick
 end
 
 to move
-
+;normal
   if travel_restrictions != true [
     ask humans [
       right random 20
@@ -130,27 +125,44 @@ to move
       forward 0.2
     ]
   ]
-    if travel_restrictions [
+  ;travel restrictions
+  if travel_restrictions [
+
     ask humans [
       if shape = "blue person" [
-        if pcolor = green [right 90 ]
+        if pcolor = green [ right 90  set heading -10 ]
         if (min-pxcor * 0) <= xcor  [right 90]
         if min-pycor >= ycor [right 90]
       ]
       if shape = "green person" [
+
         if max-pxcor <= xcor [right 90]
-        if pcolor = blue [ right 90]
+        if pcolor = blue [ right 90  set heading 10]
         if (max-pxcor ) <= xcor  [right 90]
         if min-pycor >= ycor [right 90]
       ]
+
          right random 20
       left random 20
       forward 0.2
     ]
 
+
+
+  ]
+  ;social distance
+   if social_distancing = true [
+    distancing
+  ]
+
+end
+to distancing ;; distancing procedure
+  let dist []
+  ask humans [
+    set dist sqrt((xcor * xcor) + (ycor * ycor))
+
   ]
 end
-
 
 ; Sets up Green and Blue Area
 to make-area
@@ -267,7 +279,7 @@ blue_population
 blue_population
 0
 10000
-10.0
+4.0
 10
 1
 NIL
@@ -297,7 +309,7 @@ infection_rate
 infection_rate
 0
 100
-5.0
+9.0
 1
 1
 NIL
@@ -327,7 +339,7 @@ immunity_duration
 immunity_duration
 0
 1000
-501.0
+506.0
 1
 1
 NIL
@@ -381,7 +393,7 @@ SWITCH
 427
 self_isolation
 self_isolation
-0
+1
 1
 -1000
 
@@ -392,7 +404,7 @@ SWITCH
 459
 social_distancing
 social_distancing
-0
+1
 1
 -1000
 
