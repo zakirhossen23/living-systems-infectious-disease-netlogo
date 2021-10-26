@@ -44,7 +44,8 @@ globals [
   green_antibodies_percentage
 
   blue_antibodies_percentage
-
+  green_wall
+  blue_wall
 ]
 
 humans-own[
@@ -57,7 +58,7 @@ humans-own[
 ;setup world
 to setup_world
 
-  clear-all
+  clear-al
  make-area
  reset-ticks
 end
@@ -108,7 +109,8 @@ end
 ;run model
 to run_model
   ask humans [
-    right random
+    right random 20
+    left random 20
     forward 1
   ]
   tick
@@ -117,22 +119,14 @@ end
 
 ; Sets up Green and Blue Area
 to make-area
-
   ;green
-  ask patches with [pxcor >= round (max-pxcor / 50) ] [  sprout  2[
-      set shape "square 2"
-      set color green
+  ask patches with [ pxcor >= round (max-pxcor / 50) ] [  set pcolor green  ]
+  set green_wall patches with [  pcolor = green   ]
 
-    ]
+  ;blue
+  ask patches with [ pxcor < round (max-pxcor / 50) ] [  set pcolor blue  ]
+  set green_wall patches with [  pcolor = blue   ]
 
-  ]
-    ;blue
-  ask patches with [ pxcor < round (max-pxcor / 50) ] [
-    sprout  1[
-      set shape "square 2"
-      set color blue
-
-  ]]
 
 end
 @#$#@#$#@
@@ -223,7 +217,7 @@ green_population
 green_population
 0
 10000
-620.0
+5.0
 10
 1
 NIL
@@ -238,7 +232,7 @@ blue_population
 blue_population
 0
 10000
-1120.0
+10.0
 10
 1
 NIL
@@ -253,7 +247,7 @@ initially_infected
 initially_infected
 0
 1000
-395.0
+0.0
 1
 1
 NIL

@@ -44,7 +44,8 @@ globals [
   green_antibodies_percentage
 
   blue_antibodies_percentage
-
+  green_wall
+  blue_wall
 ]
 
 humans-own[
@@ -118,22 +119,14 @@ end
 
 ; Sets up Green and Blue Area
 to make-area
-
   ;green
-  ask patches with [pxcor >= round (max-pxcor / 50) ] [  sprout  2[
-      set shape "square 2"
-      set color green
+  ask patches with [ pxcor >= round (max-pxcor / 50) ] [  set pcolor green  ]
+  set green_wall patches with [  pcolor = green   ]
 
-    ]
+  ;blue
+  ask patches with [ pxcor >= round (max-pxcor / 50) ] [  set pcolor blue  ]
+  set green_wall patches with [  pcolor = blue   ]
 
-  ]
-    ;blue
-  ask patches with [ pxcor < round (max-pxcor / 50) ] [
-    sprout  1[
-      set shape "square 2"
-      set color blue
-
-  ]]
 
 end
 @#$#@#$#@
