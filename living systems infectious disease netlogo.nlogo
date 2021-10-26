@@ -56,11 +56,10 @@ humans-own[
 ]
 ;setup world
 to setup_world
-  reset-ticks
+
   clear-all
  make-area
-
-
+ reset-ticks
 end
 
 ;setup agents
@@ -69,21 +68,52 @@ to setup_agents
   create-humans blue_population
   [
     set color yellow
-    set size 15  ;; easier to see -----------------------------------------------------------------
+    set size 15  ;; easier to see -----------------------------------------------------------------X-------------------------------------------------------------------
     set shape "person"
     set xcor max-pxcor + random max-pxcor
     set ycor random-float min-pycor * 2
-
+      set antibodies 0
   ]
     create-humans green_population
   [
     set color yellow
-    set size 15  ;; easier to see -------------------------------------------------------------------
+    set size 15  ;; easier to see ---------------------------------------------------------------------X-------------------------------------------------------------------
      set shape "person"
     set xcor  random max-pxcor
     set ycor random-float min-pycor * 2
-
+    set antibodies 0
   ]
+
+  create-humans initially_infected
+  [
+    set color black
+    set size 15  ;; easier to see -------------------------------------------------------------------X-------------------------------------------------------------------
+    set shape "person"
+    set xcor max-pxcor + random max-pxcor
+    set ycor random-float min-pycor * 2
+      set antibodies 0
+  ]
+    create-humans initially_infected
+  [
+    set color black
+    set size 15  ;; easier to see ---------------------------------------------------------------------X-------------------------------------------------------------------
+     set shape "person"
+    set xcor  random max-pxcor
+    set ycor random-float min-pycor * 2
+    set antibodies 0
+  ]
+
+end
+
+;run model
+to run_model
+  ask humans [
+    right random 20
+    left random 20
+    forward 1
+  ]
+  tick
+
 end
 
 ; Sets up Green and Blue Area
@@ -175,7 +205,7 @@ BUTTON
 79
 NIL
 run_model
-NIL
+T
 1
 T
 OBSERVER
@@ -194,7 +224,7 @@ green_population
 green_population
 0
 10000
-2580.0
+620.0
 10
 1
 NIL
@@ -209,7 +239,7 @@ blue_population
 blue_population
 0
 10000
-2510.0
+1120.0
 10
 1
 NIL
