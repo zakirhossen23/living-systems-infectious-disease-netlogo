@@ -157,10 +157,10 @@ to move
 
 end
 to distancing ;; distancing procedure
-  let dist []
-  ask humans [
-    set dist sqrt((xcor * xcor) + (ycor * ycor))
-
+   ask humans [
+    if not any? humans with [ breed != [ breed ] of myself and abs (ycor - [ ycor ] of myself) < 1 ] [
+     forward 0.2
+    ]
   ]
 end
 
@@ -404,7 +404,7 @@ SWITCH
 459
 social_distancing
 social_distancing
-1
+0
 1
 -1000
 

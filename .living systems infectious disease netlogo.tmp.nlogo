@@ -130,7 +130,7 @@ to move
 
     ask humans [
       if shape = "blue person" [
-        if pcolor = green [ right 90  set heading 0 ]
+        if pcolor = green [ right 90  set heading -10 ]
         if (min-pxcor * 0) <= xcor  [right 90]
         if min-pycor >= ycor [right 90]
       ]
@@ -157,10 +157,10 @@ to move
 
 end
 to distancing ;; distancing procedure
-  let dist []
-  ask humans [
-    set dist sqrt((xcor * xcor) + (ycor * ycor))
-
+   ask humans [
+    if not any? humans with [ breed != [ breed ] of myself and abs (ycor - [ ycor ] of myself) < 1 ] [
+     forward 0.2
+    ]
   ]
 end
 
@@ -279,7 +279,7 @@ blue_population
 blue_population
 0
 10000
-20.0
+4.0
 10
 1
 NIL
@@ -404,7 +404,7 @@ SWITCH
 459
 social_distancing
 social_distancing
-1
+0
 1
 -1000
 
