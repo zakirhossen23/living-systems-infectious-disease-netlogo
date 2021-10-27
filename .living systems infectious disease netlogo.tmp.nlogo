@@ -121,8 +121,15 @@ to run_model
 end
 
 to move
+
+
   ;infecting
-  ask humans [
+   ask humans [
+      ask other humans-here with [ isinfected != true and antibodies = 0 ]
+    [ if random-float 100 <
+      [ set isinfected true ;infected
+          set infected_time illness_duration
+          set color red ] ]
     if isinfected = true [
       let victim  one-of humans-on patches in-radius 1
       if victim != nobody[
@@ -135,7 +142,7 @@ to move
       ]
     ]
   ]
-;normal
+
   ;travel restrictions
   if travel_restrictions [
     ask humans [
@@ -372,7 +379,7 @@ survival_rate
 survival_rate
 0
 100
-80.0
+56.0
 1
 1
 NIL
