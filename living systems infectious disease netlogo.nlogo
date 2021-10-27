@@ -126,17 +126,20 @@ to move
   ;infecting
    ask humans [
       ask other humans-here with [ isinfected != true and antibodies = 0 ]
-    [ if random-float 100 < infection_rate
-      [ set isinfected true ;infected
+    [ if random-float 100 < infection_rate;infection rate
+      [  if random-float 100 < survival_rate[;survival_rate
+        set isinfected true ;infected
           set infected_time illness_duration
-          set color red ] ]
+        set color red ] ]]
     if isinfected = true [
       let victim  one-of humans-on patches in-radius 1
       if victim != nobody[
         ask victim [ if  isinfected != true and antibodies = 0[
+            if random-float 100 < survival_rate[;survival_rate
           set isinfected true ;infected
           set infected_time illness_duration
           set color red
+          ]
           ]
         ]
       ]
