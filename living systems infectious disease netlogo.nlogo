@@ -57,10 +57,10 @@ humans-own[
 ]
 ;setup world
 to setup_world
-
+ reset-ticks
   clear-turtles
  make-area
- reset-ticks
+
 end
 
 ;setup agents
@@ -122,53 +122,22 @@ end
 
 to move
 
-
   ;infect
 
    ask humans [
      if infected_time > 0 [ set infected_time infected_time - 1]
-    ask other humans-here with [ isinfected != true and antibodies = 0 ]
-    [ if random-float 100 < infection_rate and antibodies = 0  ;infection rate
-      [set isinfected true ;infected
-        set infected_time illness_duration
-        set color red ]]
-    if isinfected = true and antibodies = 0  [
-      let victim  one-of humans-on patches in-radius 1
-      if victim != nobody[
-        ask victim [ if  isinfected != true and antibodies = 0[
-          if random-float 100 < survival_rate[;survival_rate
-            set isinfected true ;infected
+
+         ask other humans-here with [ isinfected != true and antibodies = 0 ][
+
+         set isinfected true ;infected
             set infected_time illness_duration
             set color red
-          ]
-          ]
-        ]
+
       ]
-    ]
   ]
 
-  ;travel restrictions
-  if travel_restrictions [
-    ask humans [
-      if shape = "blue person" [
-        if pcolor = green [  set heading -10 ]
-        if (min-pxcor * 0) <= xcor  [right 90]
-        if min-pycor >= ycor [right 90]
-      ]
-      if shape = "green person" [
-        if max-pxcor <= xcor [right 90]
-        if pcolor = blue [   set heading 10]
-        if (max-pxcor ) <= xcor  [right 90]
-        if min-pycor >= ycor [right 90]
-      ]
-    ]
 
-  ]
 
-  ;social distance
-  if social_distancing = true [
-    distancing
-  ]
 
   ;self_isolation
   if self_isolation = true[
@@ -177,18 +146,58 @@ to move
      if self_isolation = false[chekinginfected]
 
     ask humans[
-    if color != orange[
+        ;travel restrictions
+  if travel_restrictions [
+
+      if shape = "blue person" [
+        if pcolor = green [  set heading 10 ]
+        if (min-pxcor * 0) <= xcor  [right 90]
+        if min-pycor >= ycor [right 90]
+      ]
+      if shape = "green person" [
+        if max-pxcor <= xcor [set heading -10]
+        if pcolor = blue [ let positiony ycor  facexy 10 positiony]
+        if (max-pxcor ) <= xcor  [right 90]
+        if min-pycor >= ycor [right 90]
+      ]
+    ]
+    let positionx ycor
+
+
+  ;social distance
+  ifelse social_distancing = true [
+      ifelse not any? humans-here with [ycor - [ycor] of myself < 1 ][
+     if color != orange and isinfected != true [
+        right random 20
+           forward 0.2
+    ]
+      ][
+        right random 20
+        left random 20
+        forward 0.2
+      ]
+  ][
+    if color != orange  [
     right random 20
     left random 20
     forward 0.2
     ]
-  ]
+  ]]
+  ;updating global variables
+  updatesglobal
+end
+to updatesglobal
+  carefully [
+   set total_infected_percentage count humans with [color = red]  * 100 / count humans
+ ] [
+
+]
 
 end
 ;isolation
 to isolation
    ask humans [
-  if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) [;death
+  if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) - 2 [;death
       if random-float 100 < survival_rate and antibodies = 0  [;survival_rate
          die;die human
         if shape = "green person"[
@@ -229,7 +238,7 @@ end
 to chekinginfected
 
     ask humans [
-    if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) [;death
+    if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) - 2 [;death
       if random-float 100 < survival_rate and antibodies = 0  [;survival_rate
          die;die human
         if shape = "green person"[
@@ -261,15 +270,6 @@ to chekinginfected
     ] if infected_time < 0 [set infected_time 0]
 
 
-  ]
-end
-; distancing procedure
-to distancing ;
-   ask humans [
-    if not any? humans with [ breed != [ breed ] of myself and abs (ycor - [ ycor ] of myself) < 1 ] [
-   left -10
-      right -10
-    ]
   ]
 end
 
@@ -314,9 +314,9 @@ ticks
 30.0
 
 BUTTON
-6
+7
 10
-106
+107
 43
 setup_world
 setup_world
@@ -373,7 +373,7 @@ green_population
 green_population
 0
 10000
-310.0
+4420.0
 10
 1
 NIL
@@ -388,7 +388,7 @@ blue_population
 blue_population
 0
 10000
-400.0
+4500.0
 10
 1
 NIL
@@ -403,7 +403,7 @@ initially_infected
 initially_infected
 0
 1000
-205.0
+204.0
 1
 1
 NIL
@@ -418,7 +418,7 @@ infection_rate
 infection_rate
 0
 100
-46.0
+68.0
 1
 1
 NIL
@@ -433,7 +433,7 @@ survival_rate
 survival_rate
 0
 100
-81.0
+80.0
 1
 1
 NIL
@@ -516,6 +516,50 @@ social_distancing
 1
 1
 -1000
+
+MONITOR
+1451
+21
+1605
+66
+Current Green Population
+count humans with [shape = \"green person\"]
+17
+1
+11
+
+MONITOR
+1453
+75
+1596
+120
+Current Blue Population
+count humans with [shape = \"blue person\"]
+17
+1
+11
+
+MONITOR
+1455
+141
+1558
+186
+Current Humans
+count humans
+17
+1
+11
+
+MONITOR
+1452
+219
+1613
+264
+total_infected_percentage
+total_infected_percentage
+2
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
