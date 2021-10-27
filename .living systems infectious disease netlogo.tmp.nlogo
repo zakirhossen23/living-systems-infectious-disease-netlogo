@@ -188,20 +188,7 @@ end
 ;isolation
 to isolation
    ask humans [
-  if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) [;death
-      if random-float 100 < survival_rate and antibodies = 0  [;survival_rate
-         die;die human
-        if shape = "green person"[
-          set total_deaths total_deaths + 1
-          set green_deaths green_deaths + 1
-        ]
-         if shape = "blue person"[
-          set total_deaths total_deaths + 1
-          set blue_deaths blue_deaths + 1
-        ]
 
-         ]
-    ]
     if infected_time < ( illness_duration - undetected_period) and infected_time > 0 [
       set color orange ;changed to orange
     ]
@@ -229,7 +216,7 @@ end
 to chekinginfected
 
     ask humans [
-    if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) [;death
+
       if random-float 100 < survival_rate and antibodies = 0  [;survival_rate
          die;die human
         if shape = "green person"[
