@@ -188,18 +188,21 @@ to move
 end
 to updatesglobal
   carefully [
-   set total_infected_percentage count humans with [color = red]  * 100 / count humans
- ] [
-
-]
+    set total_infected_percentage count humans with [color = red]  * 100 / count humans
+    set total_antibodies_percentage count humans with [color = black] * 100 / count humans
+    set green_infected_percentage count humans with [shape = "green person" and color = red] * 100 / count humans with [shape = "green person"]
+    set blue_infected_percentage count humans with [shape = "blue person" and color = red] * 100 / count humans with [shape = "blue person"]
+      set green_antibodies_percentage count humans with [shape = "green person" and color = black] * 100 / count humans with [shape = "green person"]
+   set blue_antibodies_percentage count humans with [shape = "blue person" and color = black] * 100 / count humans with [shape = "blue person"]
+ ] []
 
 end
 ;isolation
 to isolation
    ask humans [
-  if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) - 5 [;death
+  if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) - 1 [;death
       if random-float 100 < survival_rate and antibodies = 0  [;survival_rate
-         die;die human
+
         if shape = "green person"[
           set total_deaths total_deaths + 1
           set green_deaths green_deaths + 1
@@ -208,7 +211,7 @@ to isolation
           set total_deaths total_deaths + 1
           set blue_deaths blue_deaths + 1
         ]
-
+die;die human
          ]
     ]
     if infected_time < ( illness_duration - undetected_period) and infected_time > 0 [
@@ -238,9 +241,9 @@ end
 to chekinginfected
 
     ask humans [
-    if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) -  [;death
+    if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) - 1 [;death
       if random-float 100 < survival_rate and antibodies = 0  [;survival_rate
-         die;die human
+
         if shape = "green person"[
           set total_deaths total_deaths + 1
           set green_deaths green_deaths + 1
@@ -249,7 +252,7 @@ to chekinginfected
           set total_deaths total_deaths + 1
           set blue_deaths blue_deaths + 1
         ]
-
+  die;die human
          ]
     ]
 
@@ -373,7 +376,7 @@ green_population
 green_population
 0
 10000
-4420.0
+4980.0
 10
 1
 NIL
@@ -388,7 +391,7 @@ blue_population
 blue_population
 0
 10000
-4500.0
+2450.0
 10
 1
 NIL
@@ -418,7 +421,7 @@ infection_rate
 infection_rate
 0
 100
-68.0
+18.0
 1
 1
 NIL
@@ -502,7 +505,7 @@ SWITCH
 427
 self_isolation
 self_isolation
-1
+0
 1
 -1000
 
@@ -518,10 +521,10 @@ social_distancing
 -1000
 
 MONITOR
-1451
-21
-1605
-66
+1616
+170
+1796
+215
 Current Green Population
 count humans with [shape = \"green person\"]
 17
@@ -529,10 +532,10 @@ count humans with [shape = \"green person\"]
 11
 
 MONITOR
-1453
-75
-1596
-120
+1801
+170
+1974
+215
 Current Blue Population
 count humans with [shape = \"blue person\"]
 17
@@ -540,10 +543,10 @@ count humans with [shape = \"blue person\"]
 11
 
 MONITOR
-1455
-141
-1558
-186
+1448
+171
+1610
+216
 Current Humans
 count humans
 17
@@ -551,15 +554,152 @@ count humans
 11
 
 MONITOR
-1452
-219
-1613
-264
+1448
+21
+1609
+66
 total_infected_percentage
 total_infected_percentage
 2
 1
 11
+
+MONITOR
+1448
+71
+1609
+116
+NIL
+total_deaths
+17
+1
+11
+
+MONITOR
+1448
+122
+1609
+167
+NIL
+total_antibodies_percentage
+2
+1
+11
+
+MONITOR
+1617
+20
+1796
+65
+NIL
+green_antibodies_percentage
+2
+1
+11
+
+MONITOR
+1616
+70
+1796
+115
+NIL
+green_deaths
+17
+1
+11
+
+MONITOR
+1615
+120
+1795
+165
+NIL
+green_infected_percentage
+2
+1
+11
+
+MONITOR
+1801
+19
+1971
+64
+NIL
+blue_antibodies_percentage
+2
+1
+11
+
+MONITOR
+1801
+70
+1972
+115
+NIL
+blue_deaths
+17
+1
+11
+
+MONITOR
+1800
+121
+1972
+166
+NIL
+blue_infected_percentage
+2
+1
+11
+
+MONITOR
+1978
+19
+2082
+64
+Active cases
+count humans with [color = red]
+0
+1
+11
+
+PLOT
+1449
+234
+1975
+420
+Populations
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"green population" 1.0 0 -10899396 true "" "plot count humans with [shape = \"green person\"]"
+"blue population" 1.0 0 -13345367 true "" "plot count humans with [shape = \"blue person\"]"
+
+PLOT
+1453
+446
+1984
+663
+Population
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"Infected" 1.0 0 -2674135 true "" "plot count humans with [color = red]"
+"Immune" 1.0 0 -16777216 true "" "plot count humans with [color = black]"
 
 @#$#@#$#@
 ## WHAT IS IT?
