@@ -133,13 +133,13 @@ to move
   if travel_restrictions [
     ask humans [
       if shape = "blue person" [
-        if pcolor = green [ right 90  set heading -10 ]
+        if pcolor = green [  set heading -10 ]
         if (min-pxcor * 0) <= xcor  [right 90]
         if min-pycor >= ycor [right 90]
       ]
       if shape = "green person" [
         if max-pxcor <= xcor [right 90]
-        if pcolor = blue [ right 90  set heading 10]
+        if pcolor = blue [   set heading 10]
         if (max-pxcor ) <= xcor  [right 90]
         if min-pycor >= ycor [right 90]
       ]
@@ -151,11 +151,15 @@ to move
   if social_distancing = true [
     distancing
   ]
-  ask humans [;cheking infection
-    if not any? humans with [ breed != [ breed ] of myself and abs (ycor - [ ycor ] of myself) < 1 and isinfected = true and antibodies = 0 and self_isolation = false ] [
-      set isinfected true;infected
-       set infected_time illness_duration + undetected_period
-    ]
+
+  ask humans with [  isinfected = true and antibodies = 0] [ ; checking infection
+      ask humans-here [
+       set isinfected true;infected
+       set infected_time illness_duration
+      set color red
+      ]
+]
+    ask humans[
     right random 20
     left random 20
     forward 0.2
@@ -169,14 +173,30 @@ end
 ;isolation
 to isolation
    ask humans [
-    set color orange
-    set infected_time illness_duration + undetected_period
+    if infected_time > 0 [ set infected_time (infected_time - 1)]
 
-    if not any? humans with [ breed != [ breed ] of myself and abs (ycor - [ ycor ] of myself) < 1 and isinfected = true and antibodies = 0 and self_isolation = false ] [
-      set isinfected true;infected
+    if infected_time < ( illness_duration - undetected_period) and infected_time > 0 [
+    set color orange ;changed to orange
+      ]
+    if isinfected = true and infected_time = 1 and antibodies = 0  [
+      set color black ;setting antibodies after infected
+      set antibodies immunity_duration
 
     ]
+    if antibodies > 0 [
+      set antibodies (antibodies - 1)
+      if antibodies = 0 and  isinfected = true  [
+        set isinfected false
+         set color yellow ;changed to yellow
+      ]
+    ]
+    if antibodies < 0 [
+      set antibodies 0
+    ] if infected_time < 0 [set infected_time 0]
+    ;moving
+
   ]
+
 end
 
 ; distancing procedure
@@ -203,10 +223,10 @@ to make-area
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-227
-10
-1441
-1225
+230
+21
+1444
+1236
 -1
 -1
 2.0
@@ -319,7 +339,7 @@ initially_infected
 initially_infected
 0
 1000
-22.0
+65.0
 1
 1
 NIL
@@ -334,7 +354,7 @@ infection_rate
 infection_rate
 0
 100
-9.0
+46.0
 1
 1
 NIL
@@ -418,7 +438,7 @@ SWITCH
 427
 self_isolation
 self_isolation
-1
+0
 1
 -1000
 
