@@ -55,6 +55,20 @@ humans-own[
   antibodies
   isinfected
 ]
+;my analysis
+to my_analysis
+  set most_effective_measure 1
+  set  least_effective_measure  3
+  set population_most_affected 2
+  set population_most_immune  1
+  set self_isolation_link 7
+  set population_density  2
+
+
+end
+
+
+
 ;setup world
 to setup_world
  reset-ticks
@@ -135,10 +149,6 @@ to move
 
       ]
   ]
-
-
-
-
   ;self_isolation
   if self_isolation = true[
     isolation
@@ -376,7 +386,7 @@ green_population
 green_population
 0
 10000
-4980.0
+5000.0
 10
 1
 NIL
@@ -391,7 +401,7 @@ blue_population
 blue_population
 0
 10000
-2450.0
+2500.0
 10
 1
 NIL
@@ -406,7 +416,7 @@ initially_infected
 initially_infected
 0
 1000
-204.0
+10.0
 1
 1
 NIL
@@ -421,7 +431,7 @@ infection_rate
 infection_rate
 0
 100
-18.0
+5.0
 1
 1
 NIL
@@ -451,7 +461,7 @@ immunity_duration
 immunity_duration
 0
 1000
-463.0
+500.0
 1
 1
 NIL
@@ -466,7 +476,7 @@ undetected_period
 undetected_period
 0
 300
-209.0
+200.0
 1
 1
 NIL
@@ -481,7 +491,7 @@ illness_duration
 illness_duration
 0
 300
-297.0
+300.0
 1
 1
 NIL
@@ -505,7 +515,7 @@ SWITCH
 427
 self_isolation
 self_isolation
-0
+1
 1
 -1000
 
@@ -667,7 +677,7 @@ PLOT
 1449
 234
 1975
-420
+487
 Populations
 NIL
 NIL
@@ -683,10 +693,10 @@ PENS
 "blue population" 1.0 0 -13345367 true "" "plot count humans with [shape = \"blue person\"]"
 
 PLOT
-1453
-446
-1984
-663
+1451
+508
+1976
+782
 Population
 NIL
 NIL
