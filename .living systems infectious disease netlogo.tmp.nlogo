@@ -122,28 +122,20 @@ end
 
 to move
   ;infecting
-
-
-   ask humans [
+  ask humans [
     if isinfected = true [
-      let victim  one-of humans-her
+      let victim  one-of humans-on patches in-radius 1
       if victim != nobody[
-        ask victim [
+        ask victim [ if  isinfected != true and antibodies = 0[
           set isinfected true ;infected
-          set infected_time illness_duration + undetected_period
+          set infected_time illness_duration
           set color red
+          ]
         ]
       ]
     ]
   ]
 ;normal
-  if travel_restrictions != true [
-    ask humans [
-      right random 20
-      left random 20
-      forward 0.2
-    ]
-  ]
   ;travel restrictions
   if travel_restrictions [
     ask humans [
@@ -173,36 +165,38 @@ to move
   ]
 
     ask humans[
+    if color != orange[
     right random 20
     left random 20
     forward 0.2
+    ]
   ]
 
 end
 ;isolation
 to isolation
    ask humans [
-    if infected_time > 0 [ set infected_time (infected_time - 1)]
+    if infected_time > 0 [ set infected_time infected_time - 1]
 
-;    if infected_time < ( illness_duration - undetected_period) and infected_time > 0 [
-;    set color orange ;changed to orange
-;      ]
-;    if isinfected = true and infected_time = 1 and antibodies = 0  [
-;      set color black ;setting antibodies after infected
-;      set antibodies immunity_duration
-;
-;    ]
-;    if antibodies > 0 [
-;      set antibodies (antibodies - 1)
-;      if antibodies = 0 and  isinfected = true  [
-;        set isinfected false
-;         set color yellow ;changed to yellow
-;      ]
-;    ]
-;    if antibodies < 0 [
-;      set antibodies 0
-;    ] if infected_time < 0 [set infected_time 0]
-;    ;moving
+    if infected_time < ( illness_duration - undetected_period) and infected_time > 0 [
+    set color orange ;changed to orange
+      ]
+    if isinfected = true and infected_time = 1 and antibodies = 0  [
+      set color black ;setting antibodies after infected
+      set antibodies immunity_duration
+
+    ]
+    if antibodies > 0 [
+      set antibodies (antibodies - 1)
+      if antibodies = 0 and  isinfected = true  [
+        set isinfected false
+         set color yellow ;changed to yellow
+      ]
+    ]
+    if antibodies < 0 [
+      set antibodies 0
+    ] if infected_time < 0 [set infected_time 0]
+    ;moving
 
   ]
 
