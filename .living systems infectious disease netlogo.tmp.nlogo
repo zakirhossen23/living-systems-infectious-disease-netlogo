@@ -126,7 +126,7 @@ to move
 
    ask humans [
     if isinfected = true [
-      let victim  one-of humans-on patches in-radius 1
+      let victim  one-of humans-her
       if victim != nobody[
         ask victim [
           set isinfected true ;infected
