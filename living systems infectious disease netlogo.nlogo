@@ -67,10 +67,33 @@ to my_analysis
 
 end
 
+to stu_information
+  set student_id 20068107
+  set student_name "katta anil kumar"
+end
+
+;reset
+to reseting
+  set total_deaths 0
+  set green_deaths 0
+  set blue_deaths 0
+  set blue_antibodies_percentage 0
+  set green_antibodies_percentage 0
+  set total_antibodies_percentage 0
+  set blue_infected_percentage 0
+  set green_infected_percentage 0
+    set total_infected_percentage 0
+
+
+
+end
 
 
 ;setup world
 to setup_world
+  my_analysis
+  reseting
+  stu_information
  reset-ticks
   clear-turtles
  make-area
@@ -210,7 +233,7 @@ end
 ;isolation
 to isolation
    ask humans [
-  if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) - 1 [;death
+  if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) - 2 [;death
       if random-float 100 < survival_rate and antibodies = 0  [;survival_rate
 
         if shape = "green person"[
@@ -251,7 +274,7 @@ end
 to chekinginfected
 
     ask humans [
-    if infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) - 1 [;death
+    if color = red and infected_time < (illness_duration - ( survival_rate * illness_duration / 100 )) and infected_time > (illness_duration - ( survival_rate * illness_duration / 100 )) - 2 [;death
       if random-float 100 < survival_rate and antibodies = 0  [;survival_rate
 
         if shape = "green person"[
@@ -386,7 +409,7 @@ green_population
 green_population
 0
 10000
-5000.0
+5010.0
 10
 1
 NIL
@@ -431,7 +454,7 @@ infection_rate
 infection_rate
 0
 100
-5.0
+30.0
 1
 1
 NIL
@@ -461,7 +484,7 @@ immunity_duration
 immunity_duration
 0
 1000
-500.0
+846.0
 1
 1
 NIL
@@ -504,7 +527,7 @@ SWITCH
 391
 travel_restrictions
 travel_restrictions
-1
+0
 1
 -1000
 
